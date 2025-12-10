@@ -25,11 +25,19 @@ ln -sf "${PLUGIN_DIR}/conf/camera_ctrl.cfg" "${CONFIG_DIR}/camera_ctrl.cfg"
 
 # 4. Symlink HTML
 echo "Linking web interface..."
-# Check if fluidd dir exists, if not try mainsail? User context showed fluidd.
+# Check for Fluidd
 if [ -d "$FLUIDD_DIR" ]; then
     ln -sf "${PLUGIN_DIR}/web/camera_settings.html" "${FLUIDD_DIR}/camera_settings.html"
-else
-    echo "Warning: Fluidd directory not found at $FLUIDD_DIR. You may need to manually link the HTML file."
+    echo "  - Installed to Fluidd"
+fi
+# Check for Mainsail
+MAINSAIL_DIR="${USER_HOME}/mainsail"
+if [ -d "$MAINSAIL_DIR" ]; then
+    ln -sf "${PLUGIN_DIR}/web/camera_settings.html" "${MAINSAIL_DIR}/camera_settings.html"
+    echo "  - Installed to Mainsail"
+fi
+if [ ! -d "$FLUIDD_DIR" ] && [ ! -d "$MAINSAIL_DIR" ]; then
+    echo "Warning: Neither Fluidd nor Mainsail directories found. You may need to manually link the HTML file."
 fi
 
 # 5. Instructions

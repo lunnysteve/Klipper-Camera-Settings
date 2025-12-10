@@ -14,12 +14,25 @@ else
     echo "Config symlink not found."
 fi
 
-# 2. Remove HTML Symlink
+# 2. Remove HTML Symlinks
+echo "Removing web interface symlink..."
+REMOVED=false
+
 if [ -L "${FLUIDD_DIR}/camera_settings.html" ]; then
-    echo "Removing web interface symlink..."
     rm "${FLUIDD_DIR}/camera_settings.html"
-else
-    echo "Web interface symlink not found."
+    echo "  - Removed from Fluidd"
+    REMOVED=true
+fi
+
+MAINSAIL_DIR="${USER_HOME}/mainsail"
+if [ -L "${MAINSAIL_DIR}/camera_settings.html" ]; then
+    rm "${MAINSAIL_DIR}/camera_settings.html"
+    echo "  - Removed from Mainsail"
+    REMOVED=true
+fi
+
+if [ "$REMOVED" = false ]; then
+    echo "Web interface symlinks not found."
 fi
 
 echo "-------------------------------------------------------"
