@@ -3,6 +3,7 @@
 USER_HOME=$HOME
 CONFIG_DIR="${USER_HOME}/printer_data/config"
 FLUIDD_DIR="${USER_HOME}/fluidd"
+MAINSAIL_DIR="${USER_HOME}/mainsail"
 PLUGIN_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo "Installing Camera Settings Plugin..."
@@ -28,13 +29,17 @@ echo "Linking web interface..."
 # Check for Fluidd
 if [ -d "$FLUIDD_DIR" ]; then
     ln -sf "${PLUGIN_DIR}/web/camera_settings.html" "${FLUIDD_DIR}/camera_settings.html"
-    echo "  - Installed to Fluidd"
+    echo "  [OK] Installed to Fluidd"
+else
+    echo "  [SKIP] Fluidd directory not found"
 fi
+
 # Check for Mainsail
-MAINSAIL_DIR="${USER_HOME}/mainsail"
 if [ -d "$MAINSAIL_DIR" ]; then
     ln -sf "${PLUGIN_DIR}/web/camera_settings.html" "${MAINSAIL_DIR}/camera_settings.html"
-    echo "  - Installed to Mainsail"
+    echo "  [OK] Installed to Mainsail"
+else
+    echo "  [SKIP] Mainsail directory not found"
 fi
 if [ ! -d "$FLUIDD_DIR" ] && [ ! -d "$MAINSAIL_DIR" ]; then
     echo "Warning: Neither Fluidd nor Mainsail directories found. You may need to manually link the HTML file."
