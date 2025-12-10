@@ -9,8 +9,7 @@ A simple plugin to control V4L2 camera settings (like focus, exposure, brightnes
 1.  Clone or copy this repository to your home directory:
     ```bash
     cd ~
-    git clone <your-repo-url> camera-settings
-    # OR just copy the folder if manually installing
+    git clone https://github.com/lunnysteve/Klipper-Camera-Settings.git camera-settings
     ```
 
 2.  Run the installer:
