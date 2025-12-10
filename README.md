@@ -1,4 +1,4 @@
-# Voron Camera Settings Plugin
+# Klipper Camera Settings Plugin
 
 A simple plugin to control V4L2 camera settings (like focus, exposure, brightness) directly from the detailed Fluidd/Mainsail web interface.
 
