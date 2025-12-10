@@ -1,5 +1,8 @@
 # Klipper Camera Settings Plugin
 
+> [!IMPORTANT]
+> **Status: Alpha** - This plugin is in early development.
+
 A simple plugin to control V4L2 camera settings (like focus, exposure, brightness) directly from the detailed Fluidd/Mainsail web interface.
 
 ![Camera Settings UI](images/camera_settings_ui.png)
