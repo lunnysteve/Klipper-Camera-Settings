@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voron Camera Settings</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #00c8ff 0%, #ff00ff 50%, #00ff88 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-color: #fff;
+            --text-muted: rgba(255, 255, 255, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            background-attachment: fixed;
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .status-bar {
+            display: inline-flex;
+            gap: 15px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            align-items: center;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff4444;
+            box-shadow: 0 0 10px #ff4444;
+            transition: all 0.3s;
+        }
+
+        .status-dot.connected {
+            background: #00ff88;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 70% 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Preview Section */
+        .preview-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .preview-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--glass-border);
+        }
+
+        .preview-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Controls Section */
+        .controls-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .control-group {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .group-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 8px;
+        }
+
+        .control-item {
+            margin-bottom: 15px;
+        }
+
+        .control-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .control-value {
+            color: #00ccff;
+            font-family: monospace;
+        }
+
+        /* Inputs */
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: transform 0.1s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            background: #00ccff;
+        }
+
+        select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 8px;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #00ccff;
+        }
+
+        .btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: rgba(0, 204, 255, 0.2);
+            border-color: rgba(0, 204, 255, 0.5);
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            transition: opacity 0.5s;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid transparent;
+            border-top-color: #00ccff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader:before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 3px solid transparent;
+            border-top-color: #ff00ff;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loadingOverlay">
+        <div style="text-align: center;">
+            <div class="loader" style="margin: 0 auto 20px;"></div>
+            <div>Loading Camera Settings...</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Camera Control</h1>
+            <div class="status-bar">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="connectionText">Connecting to Printer...</span>
+            </div>
+        </header>
+
+        <div class="main-grid">
+            <!-- Preview Column -->
+            <div class="preview-card">
+                <div class="group-title">Live Preview</div>
+                <div class="preview-container">
+                    <!-- Try relative path first, fallback to standard locations -->
+                    <img src="/webcam/?action=stream" class="preview-img"
+                        onerror="this.onerror=null; this.src='/webcam/stream';">
+                </div>
+                <div class="toolbar">
+                    <button class="btn" onclick="refreshSettings()">Reload Settings</button>
+                    <!-- <button class="btn" onclick="resetDefaults()">Reset Defaults</button> -->
+                </div>
+            </div>
+
+            <!-- Controls Column -->
+            <div class="controls-panel" id="controlsContainer">
+                <!-- Controls will be injected here via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const WS_URL = `ws://${window.location.hostname}:7125/websocket`;
+        // Fetch via Moonraker proxy
+        const SETTINGS_URL = '/server/files/config/camera_settings.json';
+
+        let ws = null;
+        let updateTimeout = null;
+
+        // Connect to Klipper
+        function connect() {
+            ws = new WebSocket(WS_URL);
+
+            ws.onopen = () => {
+                document.getElementById('statusDot').classList.add('connected');
+                document.getElementById('connectionText').textContent = 'Connected';
+                fetchSettings();
+            };
+
+            ws.onclose = () => {
+                document.getElementById('statusDot').classList.remove('connected');
+                document.getElementById('connectionText').textContent = 'Disconnected';
+                setTimeout(connect, 2000);
+            };
+        }
+
+        // Send G-Code command
+        function sendGcode(cmd) {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({
+                    "jsonrpc": "2.0",
+                    "method": "printer.gcode.script",
+                    "params": { "script": cmd },
+                    "id": Math.floor(Math.random() * 10000)
+                }));
+            }
+        }
+
+        // Fetch settings from JSON file
+        async function fetchSettings() {
+            try {
+                // First try to trigger a fresh get
+                sendGcode('CAMERA_CONTROL ACTION=get');
+
+                // Give it a moment to write the file
+                await new Promise(r => setTimeout(r, 1000));
+
+                const response = await fetch(SETTINGS_URL + '?t=' + new Date().getTime());
+                if (!response.ok) throw new Error("Settings file not found");
+
+                const settings = await response.json();
+                renderControls(settings);
+                document.getElementById('loadingOverlay').style.opacity = '0';
+                setTimeout(() => document.getElementById('loadingOverlay').style.display = 'none', 500);
+            } catch (e) {
+                console.error("Failed to load settings:", e);
+                // Retry
+                setTimeout(fetchSettings, 2000);
+            }
+        }
+
+        function refreshSettings() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            document.getElementById('loadingOverlay').style.opacity = '1';
+            fetchSettings();
+        }
+
+        // Handle control changes
+        function handleUpdate(control, value, type) {
+            // Update local UI immediately
+            if (type === 'int') {
+                const label = document.getElementById(`val-${control}`);
+                if (label) label.textContent = value;
+            }
+
+            // Debounce actual command
+            if (updateTimeout) clearTimeout(updateTimeout);
+
+            updateTimeout = setTimeout(() => {
+                console.log(`Setting ${control} to ${value}`);
+                sendGcode(`CAMERA_CONTROL ACTION=set CONTROL=${control} VALUE=${value}`);
+
+                // Refresh settings to pick up any side effects (like flags enabling/disabling)
+                // We use a small delay to let the set command propagation start, 
+                // though fetchSettings has its own built-in delay.
+                setTimeout(() => fetchSettings(), 500);
+            }, 300); // 300ms debounce
+        }
+
+        // Render UI
+        function renderControls(data) {
+            const container = document.getElementById('controlsContainer');
+            container.innerHTML = '';
+
+            // Bucket Sort
+            const buckets = {
+                'Image': [],
+                'Exposure': [],
+                'Focus': [],
+                'PTZ': [],
+                'System': []
+            };
+
+            Object.entries(data).forEach(([key, info]) => {
+                if (key.includes('exposure') || key.includes('white_balance') || key.includes('gain')) buckets['Exposure'].push(key);
+                else if (key.includes('focus') || key.includes('zoom')) buckets['Focus'].push(key);
+                else if (key.includes('pan') || key.includes('tilt')) buckets['PTZ'].push(key);
+                else if (key.includes('freq')) buckets['System'].push(key);
+                else buckets['Image'].push(key); // brightness, contrast, etc
+            });
+
+            // Render Groups
+            for (let [name, keys] of Object.entries(buckets)) {
+                if (keys.length === 0) continue;
+
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'control-group';
+                groupDiv.innerHTML = `<div class="group-title">${name}</div>`;
+
+                keys.sort().forEach(key => {
+                    const info = data[key];
+                    const item = document.createElement('div');
+                    item.className = 'control-item';
+
+                    const cleanName = key.replace(/_/g, ' ');
+
+                    // Check if inactive
+                    const isInactive = info.flags && info.flags.includes('inactive');
+                    const disabledAttr = isInactive ? 'disabled' : '';
+                    const opacityStyle = isInactive ? 'opacity: 0.5;' : '';
+
+                    if (info.type === 'int' || info.type === 'menu') {
+                        item.innerHTML = `
+                            <div class="control-label" style="${opacityStyle}">
+                                <span>${cleanName}</span>
+                                <span id="val-${key}" class="control-value">${info.current}</span>
+                            </div>
+                            <input type="range" 
+                                min="${info.min}" max="${info.max}" step="${info.step || 1}" 
+                                value="${info.current}" 
+                                ${disabledAttr}
+                                oninput="handleUpdate('${key}', this.value, 'int')"
+                                style="${opacityStyle}"
+                            >
+                        `;
+                    } else if (info.type === 'bool') {
+                        item.innerHTML = `
+                             <label class="checkbox-wrapper" style="${opacityStyle}">
+                                <input type="checkbox" 
+                                    ${info.current ? 'checked' : ''} 
+                                    ${disabledAttr}
+                                    onchange="handleUpdate('${key}', this.checked ? 1 : 0, 'bool')"
+                                >
+                                <span>${cleanName}</span>
+                            </label>
+                        `;
+                    }
+
+                    groupDiv.appendChild(item);
+                });
+
+                container.appendChild(groupDiv);
+            }
+        }
+
+        // Start
+        connect();
+
+    </script>
+</body>
+
+</html>
