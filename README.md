@@ -5,7 +5,23 @@
 
 A simple plugin to control V4L2 camera settings (like focus, exposure, brightness) directly from the detailed Fluidd/Mainsail web interface.
 
+A simple plugin to control V4L2 camera settings (like focus, exposure, brightness) directly from the detailed Fluidd/Mainsail web interface.
+
 ![Camera Settings UI](images/camera_settings_ui.png)
+
+## About
+This plugin provides a sidebar control panel in your Klipper web interface (Fluidd/Mainsail) to adjust camera parameters on the fly. It interacts directly with `v4l2-ctl` to change hardware settings and persists them across restarts.
+
+Key capabilities:
+- Adjust Brightness, Contrast, Saturation, Gain, etc.
+- Toggle Auto-Focus and set Manual Focus.
+- Save defaults that reload when Klipper restarts.
+
+## Requirements
+- **OS**: Linux (typical Klipper install on Pi/Armbian).
+- **Dependencies**: `v4l2-utils` (installed automatically by script).
+- **Web Interface**: Fluidd or Mainsail (using `iframe` or direct HTML linking).
+- **Camera**: A V4L2-compatible USB or CSI camera (`/dev/video0` default).
 
 ## Installation
 
