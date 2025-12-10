@@ -36,3 +36,29 @@ Access the settings dashboard at:
 -   **Persistent Settings**: Settings are saved and restored on restart.
 -   **Sidebar Layout**: 70% camera view + 30% sticky settings panel.
 -   **Auto-Refresh**: UI updates automatically when controls interact (e.g. turning off Auto Focus enables the Manual Focus slider).
+
+## Updates
+
+To enable easy updates via Moonraker, add the following to your `moonraker.conf`:
+
+```ini
+[update_manager camera-settings]
+type: git_repo
+path: ~/camera-settings
+origin: https://github.com/lunnysteve/Klipper-Camera-Settings.git
+primary_branch: main
+is_system_service: False
+managed_services: klipper
+```
+
+## Uninstalling
+
+To uninstall the plugin:
+
+1.  Run the uninstall script:
+    ```bash
+    cd ~/camera-settings
+    ./uninstall.sh
+    ```
+2.  Remove `[include camera_ctrl.cfg]` from your `printer.cfg`.
+3.  Restart Klipper.
