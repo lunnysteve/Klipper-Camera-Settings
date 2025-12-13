@@ -3,13 +3,17 @@
 > [!IMPORTANT]
 > **Status: Alpha** - This plugin is in early development.
 
-A simple plugin to control V4L2 camera settings (like focus, exposure, brightness) directly from the detailed Fluidd or Mainsail web interface.
+A plugin to control v4l2 camera settings (Brightness, Contrast, Focus, etc.) directly from Klipper.
+
+![Camera UI Preview](images/ui_preview.png)
+![Camera Controls](images/ui_controls.png)
 
 ## Access
-Once installed, access the control panel at:
-`http://<your-printer-ip>/camera_settings.html`
+This plugin provides a dedicated standalone page for camera control.
+**Access the control panel at:**
+`http://<your_printer_ip>/camera_settings.html`
 
-![Camera Settings UI](images/camera_settings_ui.png)
+> **Note:** This page is accessed directly via URL and does not integrate into the standard Fluidd/Mainsail sidebar menus.
 
 ## About
 This plugin provides a sidebar control panel in your Klipper web interface (Fluidd/Mainsail) to adjust camera parameters on the fly. It interacts directly with `v4l2-ctl` to change hardware settings and persists them across restarts.

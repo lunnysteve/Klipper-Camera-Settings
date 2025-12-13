@@ -7,11 +7,12 @@
     <title>Klipper Camera Settings</title>
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #00c8ff 0%, #ff00ff 50%, #00ff88 100%);
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-color: #fff;
-            --text-muted: rgba(255, 255, 255, 0.6);
+            --bg-color: #000000;
+            --panel-bg: #111111;
+            --border-color: #333333;
+            --accent-color: #00ccff;
+            --text-color: #e0e0e0;
+            --text-muted: #888888;
         }
 
         * {
@@ -21,27 +22,12 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #000;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-color);
             color: var(--text-color);
             min-height: 100vh;
-            padding: 20px;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
-            background-attachment: fixed;
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-        }
-
-        @keyframes gradientShift {
-
-            0%,
-            100% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
+            padding: 10px;
+            /* Reduced padding */
         }
 
         .container {
@@ -49,84 +35,40 @@
             margin: 0 auto;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        h1 {
-            font-size: 36px;
-            font-weight: bold;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .status-bar {
-            display: inline-flex;
-            gap: 15px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            align-items: center;
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #ff4444;
-            box-shadow: 0 0 10px #ff4444;
-            transition: all 0.3s;
-        }
-
-        .status-dot.connected {
-            background: #00ff88;
-            box-shadow: 0 0 10px #00ff88;
-        }
-
+        /* Layout */
         .main-grid {
             display: grid;
-            grid-template-columns: 70% 1fr;
-            gap: 20px;
+            grid-template-columns: 1fr;
+            /* Default to single column for mobile */
+            gap: 10px;
         }
 
-        @media (max-width: 900px) {
+        @media (min-width: 1024px) {
             .main-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 60% 1fr;
+                /* Wider video on large screens */
             }
         }
 
         /* Preview Section */
         .preview-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: sticky;
-            top: 20px;
-            height: fit-content;
+            position: relative;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
         }
 
         .preview-container {
             width: 100%;
             aspect-ratio: 16/9;
-            background: #000;
-            border-radius: 12px;
-            overflow: hidden;
+            background: transparent;
+            /* Removed black background */
             position: relative;
-            border: 1px solid var(--glass-border);
+            display: flex;
+            /* Center image */
+            justify-content: center;
+            align-items: center;
         }
 
         .preview-img {
@@ -135,172 +77,187 @@
             object-fit: contain;
         }
 
+        /* Status Overlay */
+        .status-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff4444;
+        }
+
+        .status-dot.connected {
+            background: #00ff88;
+            box-shadow: 0 0 5px #00ff88;
+        }
+
+        .status-text {
+            font-family: monospace;
+            opacity: 0.9;
+        }
+
         /* Controls Section */
         .controls-panel {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: calc(100vh - 20px);
+            overflow-y: auto;
+        }
+
+        /* Compact Scrollbar for controls */
+        .controls-panel::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .controls-panel::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 2px;
         }
 
         .control-group {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px;
         }
 
         .group-title {
-            font-size: 12px;
-            color: var(--text-muted);
+            font-size: 11px;
+            color: var(--accent-color);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--glass-border);
-            padding-bottom: 8px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
         }
 
         .control-item {
-            margin-bottom: 15px;
+            margin-bottom: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
 
         .control-item:last-child {
             margin-bottom: 0;
         }
 
-        .control-label {
+        .control-header {
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
-            margin-bottom: 8px;
+            align-items: baseline;
+            font-size: 12px;
+        }
+
+        .control-name {
+            color: var(--text-color);
         }
 
         .control-value {
-            color: #00ccff;
+            color: var(--text-muted);
             font-family: monospace;
+            font-size: 11px;
         }
 
         /* Inputs */
         input[type="range"] {
             width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
             outline: none;
             -webkit-appearance: none;
             appearance: none;
+            margin-top: 4px;
         }
 
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            background: #fff;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-color);
+            /* Colored thumb */
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            transition: transform 0.1s;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+            /* Subtle glow */
         }
 
         input[type="range"]::-webkit-slider-thumb:hover {
+            background: #60a5fa;
+            /* Lighter blue on hover */
             transform: scale(1.1);
-            background: #00ccff;
         }
 
-        select {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--glass-border);
-            color: #fff;
-            padding: 8px;
-            border-radius: 8px;
-            outline: none;
-        }
-
+        /* Checkbox */
         .checkbox-wrapper {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             cursor: pointer;
+            font-size: 12px;
+            padding: 2px 0;
         }
 
         input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #00ccff;
+            width: 14px;
+            height: 14px;
+            accent-color: var(--accent-color);
+            background: #333;
+            border-color: #555;
         }
 
+        /* Buttons */
         .btn {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 8px;
+            background: #222;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 6px 12px;
+            font-size: 11px;
+            border-radius: 3px;
             cursor: pointer;
-            transition: all 0.2s;
             text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 1px;
         }
 
         .btn:hover {
-            background: rgba(0, 204, 255, 0.2);
-            border-color: rgba(0, 204, 255, 0.5);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
 
         .toolbar {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        #loadingOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-            transition: opacity 0.5s;
-        }
-
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid transparent;
-            border-top-color: #00ccff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .loader:before {
-            content: '';
             position: absolute;
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            bottom: 5px;
-            border: 3px solid transparent;
-            border-top-color: #ff00ff;
-            border-radius: 50%;
-            animation: spin 2s linear infinite;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+            opacity: 0;
+            /* Hide by default, show on hover */
+            transition: opacity 0.2s;
         }
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
+        .preview-card:hover .toolbar {
+            opacity: 1;
+        }
 
-            100% {
-                transform: rotate(360deg);
-            }
+        /* Loader */
+        #loadingOverlay {
+            background: rgba(0, 0, 0, 0.9) !important;
         }
     </style>
 </head>
@@ -309,31 +266,33 @@
     <div id="loadingOverlay">
         <div style="text-align: center;">
             <div class="loader" style="margin: 0 auto 20px;"></div>
-            <div>Loading Camera Settings...</div>
+            <div>Loading Settings...</div>
         </div>
     </div>
 
     <div class="container">
-        <header>
-            <h2>Klipper Camera Control</h2>
-            <div class="status-bar">
-                <div class="status-dot" id="statusDot"></div>
-                <span id="connectionText">Connecting to Printer...</span>
-            </div>
-        </header>
-
         <div class="main-grid">
             <!-- Preview Column -->
             <div class="preview-card">
-                <div class="group-title">Live Preview</div>
                 <div class="preview-container">
                     <!-- Try relative path first, fallback to standard locations -->
                     <img src="/webcam/?action=stream" class="preview-img"
                         onerror="this.onerror=null; this.src='/webcam/stream';">
-                </div>
-                <div class="toolbar">
-                    <button class="btn" onclick="refreshSettings()">Reload Settings</button>
-                    <!-- <button class="btn" onclick="resetDefaults()">Reset Defaults</button> -->
+
+                    <!-- Overlay Status -->
+                    <div class="status-overlay">
+                        <div class="status-dot" id="statusDot"></div>
+                        <span id="connectionText" class="status-text">Disconnect</span>
+                    </div>
+
+                    <!-- Overlay Toolbar -->
+                    <div class="toolbar">
+                        <select id="cameraSelector" class="btn" onchange="switchCamera(this.value)"
+                            style="background: rgba(0,0,0,0.8); border: 1px solid #333; color: white;">
+                            <option value="/dev/video0">Loading...</option>
+                        </select>
+                        <button class="btn" onclick="refreshSettings()">Reload</button>
+                    </div>
                 </div>
             </div>
 
@@ -347,9 +306,9 @@
     <script>
         // Configuration
         const WS_URL = `ws://${window.location.hostname}:7125/websocket`;
-        // Fetch via Moonraker proxy
-        const SETTINGS_URL = '/server/files/config/camera_settings.json';
 
+        // State
+        let currentDevice = "/dev/video0";
         let ws = null;
         let updateTimeout = null;
 
@@ -360,7 +319,10 @@
             ws.onopen = () => {
                 document.getElementById('statusDot').classList.add('connected');
                 document.getElementById('connectionText').textContent = 'Connected';
-                fetchSettings();
+
+                // Trigger device list generation
+                sendGcode('CAMERA_CONTROL ACTION=list');
+                setTimeout(loadDeviceList, 1000);
             };
 
             ws.onclose = () => {
@@ -382,16 +344,100 @@
             }
         }
 
+        async function loadDeviceList() {
+            try {
+                const response = await fetch('/server/files/config/camera_devices.json?t=' + new Date().getTime());
+                if (!response.ok) throw new Error("Device list not ready");
+                const devices = await response.json();
+
+                const selector = document.getElementById('cameraSelector');
+                selector.innerHTML = '';
+
+                if (devices.length === 0) {
+                    const opt = document.createElement('option');
+                    opt.text = "No cameras found";
+                    selector.add(opt);
+                    return;
+                }
+
+                devices.forEach((dev, index) => {
+                    const opt = document.createElement('option');
+                    opt.value = dev.path;
+                    opt.text = dev.name || dev.path;
+                    // Use index to help guess stream if needed, usually mapped to webcam ports
+                    opt.dataset.index = index;
+                    selector.add(opt);
+                });
+
+                // restore selection if possible
+                if (devices.some(d => d.path === currentDevice)) {
+                    selector.value = currentDevice;
+                } else {
+                    currentDevice = devices[0].path;
+                    selector.value = currentDevice;
+                }
+
+                // Load settings for the selected device
+                switchCamera(currentDevice);
+
+            } catch (e) {
+                console.log("Waiting for device list...", e);
+                setTimeout(loadDeviceList, 2000);
+            }
+        }
+
+        function switchCamera(devicePath) {
+            currentDevice = devicePath;
+            console.log("Switching to", devicePath);
+
+            // 1. Update Stream URL (Best Effort Guess)
+            // /dev/video0 -> /webcam/
+            // /dev/video1 -> /webcam2/
+            // /dev/video2 -> /webcam3/
+            const selector = document.getElementById('cameraSelector');
+            const selectedOpt = selector.querySelector(`option[value="${devicePath}"]`);
+            // Default to index 0 logic
+            let streamPath = "/webcam/";
+
+            if (selectedOpt) {
+                // If the device path ends in a number, try to map it
+                // Logic: video0 -> /webcam/, video1 -> /webcam2/, video2 -> /webcam3/
+                const match = devicePath.match(/video(\d+)$/);
+                if (match) {
+                    const num = parseInt(match[1]);
+                    if (num === 0) {
+                        streamPath = "/webcam/";
+                    } else {
+                        streamPath = `/webcam${num + 1}/`;
+                    }
+                }
+            }
+
+            const img = document.querySelector('.preview-img');
+            // Reset to spinner or transparent while loading?
+            img.src = `${streamPath}?action=stream&t=${new Date().getTime()}`;
+            img.onerror = () => {
+                console.log("Stream load failed, trying generic fallback");
+                // If specific stream fails, maybe fall back to default? Or just let it fail.
+            };
+
+            // 2. Fetch Settings
+            fetchSettings();
+        }
+
         // Fetch settings from JSON file
         async function fetchSettings() {
             try {
+                const devName = currentDevice.split('/').pop(); // video0
+                const settingsUrl = `/server/files/config/camera_settings_${devName}.json`;
+
                 // First try to trigger a fresh get
-                sendGcode('CAMERA_CONTROL ACTION=get');
+                sendGcode(`CAMERA_CONTROL ACTION=get DEVICE=${currentDevice}`);
 
                 // Give it a moment to write the file
                 await new Promise(r => setTimeout(r, 1000));
 
-                const response = await fetch(SETTINGS_URL + '?t=' + new Date().getTime());
+                const response = await fetch(settingsUrl + '?t=' + new Date().getTime());
                 if (!response.ok) throw new Error("Settings file not found");
 
                 const settings = await response.json();
@@ -423,8 +469,8 @@
             if (updateTimeout) clearTimeout(updateTimeout);
 
             updateTimeout = setTimeout(() => {
-                console.log(`Setting ${control} to ${value}`);
-                sendGcode(`CAMERA_CONTROL ACTION=set CONTROL=${control} VALUE=${value}`);
+                console.log(`Setting ${control} to ${value} on ${currentDevice}`);
+                sendGcode(`CAMERA_CONTROL ACTION=set DEVICE=${currentDevice} CONTROL=${control} VALUE=${value}`);
 
                 // Refresh settings to pick up any side effects (like flags enabling/disabling)
                 // We use a small delay to let the set command propagation start, 
@@ -468,7 +514,8 @@
                     const item = document.createElement('div');
                     item.className = 'control-item';
 
-                    const cleanName = key.replace(/_/g, ' ');
+                    const cleanName = key.replace(/_/g, ' ')
+                        .replace(/\b\w/g, c => c.toUpperCase());
 
                     // Check if inactive
                     const isInactive = info.flags && info.flags.includes('inactive');
@@ -477,8 +524,8 @@
 
                     if (info.type === 'int' || info.type === 'menu') {
                         item.innerHTML = `
-                            <div class="control-label" style="${opacityStyle}">
-                                <span>${cleanName}</span>
+                            <div class="control-header" style="${opacityStyle}">
+                                <span class="control-name">${cleanName}</span>
                                 <span id="val-${key}" class="control-value">${info.current}</span>
                             </div>
                             <input type="range" 
