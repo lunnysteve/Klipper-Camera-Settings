@@ -5,7 +5,9 @@
 
 A simple plugin to control V4L2 camera settings (like focus, exposure, brightness) directly from the detailed Fluidd or Mainsail web interface.
 
-
+## Access
+Once installed, access the control panel at:
+`http://<your-printer-ip>/camera_settings.html`
 
 ![Camera Settings UI](images/camera_settings_ui.png)
 
