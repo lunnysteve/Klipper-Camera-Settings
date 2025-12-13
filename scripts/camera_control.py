@@ -5,7 +5,10 @@ import json
 import os
 import glob
 
-CONFIG_DIR = os.path.expanduser("~/printer_data/config")
+CONFIG_DIR = os.path.expanduser("~/printer_data/config/camera-settings")
+if not os.path.exists(CONFIG_DIR):
+    os.makedirs(CONFIG_DIR, exist_ok=True)
+
 DEVICES_FILE = os.path.join(CONFIG_DIR, "camera_devices.json")
 
 def get_settings_file(device_path):
