@@ -1,7 +1,7 @@
 # Klipper Camera Settings Plugin
 
-> [!IMPORTANT]
-> **Status: Alpha** - This plugin is in early development.
+> [!NOTE]
+> **Status: v0.2.0** - Multi-Camera Support & New UI
 
 A plugin to control v4l2 camera settings (Brightness, Contrast, Focus, etc.) directly from Klipper.
 
