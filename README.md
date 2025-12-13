@@ -12,6 +12,9 @@ A plugin to control v4l2 camera settings (Brightness, Contrast, Focus, etc.) dir
 This plugin provides a dedicated standalone page for camera control.
 **Access the control panel at:**
 `http://<your_printer_ip>/camera_settings.html`
+ 
+> [!TIP]
+> **Check out the [Wiki](https://github.com/lunnysteve/Klipper-Camera-Settings/wiki) for detailed guides on Features, Installation, and Troubleshooting.**
 
 > **Note:** This page is accessed directly via URL and does not integrate into the standard Fluidd/Mainsail sidebar menus.
 
@@ -61,7 +64,13 @@ Access the settings dashboard at:
 -   Real-time control of V4L2 parameters.
 -   **Persistent Settings**: Settings are saved and restored on restart.
 -   **Sidebar Layout**: 70% camera view + 30% sticky settings panel.
--   **Auto-Refresh**: UI updates automatically when controls interact (e.g. turning off Auto Focus enables the Manual Focus slider).
+-   **New UI Features**:
+    -   **Dark/Light Mode**: Toggleable themes.
+    -   **Real-time Histogram**: Visualize RGB exposure data.
+    -   **Overlays**: Grid and Crosshair for alignment.
+    -   **Presets**: Save and Load named configuration sets (stored in browser).
+    -   **Image Rotation**: Rotate preview 90/180/270 degrees.
+-   **Auto-Refresh**: UI updates automatically when controls interact.
 
 ## Updates
 
