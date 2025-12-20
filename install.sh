@@ -21,8 +21,10 @@ echo "Setting executable permissions..."
 chmod +x "${PLUGIN_DIR}/scripts/camera_control.py"
 
 # 3. Symlink Config
-echo "Linking configuration..."
-ln -sf "${PLUGIN_DIR}/conf/camera_ctrl.cfg" "${CONFIG_DIR}/camera_ctrl.cfg"
+echo "Installing configuration..."
+rm -f "${CONFIG_DIR}/camera_ctrl.cfg"
+cp "${PLUGIN_DIR}/camera_ctrl.cfg" "${CONFIG_DIR}/camera_ctrl.cfg"
+sed -i "s|PLUGIN_PATH_PLACEHOLDER|${PLUGIN_DIR}|g" "${CONFIG_DIR}/camera_ctrl.cfg"
 
 # 4. Symlink HTML
 echo "Linking web interface..."
